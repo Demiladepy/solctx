@@ -1,16 +1,21 @@
 import 'dotenv/config';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createServer } from './server.js';
+import { DEFAULT_EMBEDDING_MODEL } from './lib/embeddings.js';
 import type { ToolContext } from './types.js';
 
 /**
  * Read configuration into a {@link ToolContext}. No secrets are required; the
- * only setting is the Solana RPC URL, which defaults to public devnet.
+ * RPC URL defaults to public devnet. An optional OPENROUTER_API_KEY enables
+ * semantic search in get_docs, and EMBEDDING_MODEL overrides the default model.
  */
 function loadContext(): ToolContext {
   const solanaRpcUrl =
     process.env.SOLANA_RPC_URL ?? 'https://api.devnet.solana.com';
-  return { solanaRpcUrl };
+  const openrouterApiKey = process.env.OPENROUTER_API_KEY;
+  const embeddingModel =
+    process.env.EMBEDDING_MODEL ?? DEFAULT_EMBEDDING_MODEL;
+  return { solanaRpcUrl, openrouterApiKey, embeddingModel };
 }
 
 /** Boot the MCP server and connect it over stdio. */

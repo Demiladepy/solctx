@@ -6,6 +6,7 @@ describe('server', () => {
   it('creates a server with 4 tools registered', () => {
     const server = createServer({
       solanaRpcUrl: 'https://api.devnet.solana.com',
+      embeddingModel: 'nvidia/nemotron-3-embed-1b:free',
     });
     expect(server).toBeDefined();
     expect(TOOL_COUNT).toBe(4);

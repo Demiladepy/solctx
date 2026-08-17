@@ -12,6 +12,18 @@ pnpm build:index
 
 This writes `data/docs-index.json` (gitignored). No API key is required.
 
+## `get_docs` still shows `"mode": "bm25"` after adding a key
+
+Semantic mode needs chunk embeddings in the index. After setting
+`OPENROUTER_API_KEY`, rebuild so the embeddings are generated:
+
+```bash
+pnpm build:index
+```
+
+If the OpenRouter call fails at query time, `get_docs` silently falls back to
+BM25 and notes it in the `mode` field.
+
 ## RPC rate limits / timeouts
 
 The public devnet endpoint is rate limited. If

@@ -3,10 +3,15 @@ import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 /**
  * Runtime configuration passed to every tool handler. No API keys are required:
- * chain reads use the RPC URL and doc search runs locally.
+ * chain reads use the RPC URL and doc search runs locally by default. If
+ * `openrouterApiKey` is set, `get_docs` upgrades to semantic embeddings.
  */
 export interface ToolContext {
   solanaRpcUrl: string;
+  /** Optional OpenRouter key. When present, get_docs uses semantic search. */
+  openrouterApiKey?: string;
+  /** Embedding model id used when semantic search is enabled. */
+  embeddingModel: string;
 }
 
 /**

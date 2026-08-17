@@ -2,14 +2,17 @@
  * build-docs-index — builder for `data/docs-index.json`.
  *
  * Writes a curated corpus of Solana devnet documentation chunks to disk for the
- * `get_docs` tool to search with local BM25 ranking. No API key, no network,
- * no cost — run with: `pnpm build:index`.
+ * `get_docs` tool. By default it writes a BM25-only index (no API key, no
+ * network, no cost). If OPENROUTER_API_KEY is set, it also embeds each chunk so
+ * get_docs can do semantic search; EMBEDDING_MODEL overrides the model.
  *
  * The corpus is inlined here so the build is deterministic and easy to review.
  * Add entries to CORPUS to expand coverage, then re-run the script.
  */
+import 'dotenv/config';
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { DEFAULT_EMBEDDING_MODEL, embed } from '../src/lib/embeddings.js';
 
 interface CorpusEntry {
   id: string;
@@ -99,10 +102,27 @@ async function main(): Promise<void> {
   const outPath = fileURLToPath(
     new URL('../data/docs-index.json', import.meta.url),
   );
-  await writeFile(outPath, JSON.stringify(CORPUS, null, 2), 'utf8');
-  console.error(
-    `Wrote ${CORPUS.length} chunks to ${outPath} (local BM25 index, no API).`,
-  );
+  const apiKey = process.env.OPENROUTER_API_KEY;
+
+  let index: Array<CorpusEntry & { embedding?: number[] }>;
+  if (apiKey) {
+    const model = process.env.EMBEDDING_MODEL ?? DEFAULT_EMBEDDING_MODEL;
+    console.error(`Embedding ${CORPUS.length} chunks with ${model}...`);
+    const vectors = await embed(
+      CORPUS.map((c) => c.text),
+      apiKey,
+      model,
+    );
+    index = CORPUS.map((c, i) => ({ ...c, embedding: vectors[i] }));
+    console.error(`Wrote ${index.length} chunks to ${outPath} (semantic index).`);
+  } else {
+    index = CORPUS;
+    console.error(
+      `Wrote ${index.length} chunks to ${outPath} (BM25-only, no API key).`,
+    );
+  }
+
+  await writeFile(outPath, JSON.stringify(index, null, 2), 'utf8');
 }
 
 main().catch((err: unknown) => {

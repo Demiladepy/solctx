@@ -47,6 +47,19 @@ can search it with local BM25 ranking. Instant, offline, no API key.
 pnpm build:index
 ```
 
+### Optional: enable semantic search
+
+`get_docs` upgrades to embedding-based semantic search if you set an
+`OPENROUTER_API_KEY` in `.env` (the default model is free-tier) and rebuild the
+index with the key present:
+
+```bash
+# in .env: OPENROUTER_API_KEY=sk-or-...
+pnpm build:index      # now embeds each chunk via OpenRouter
+```
+
+Without a key, everything still works on local BM25.
+
 ## 5. Run
 
 ```bash
