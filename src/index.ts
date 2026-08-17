@@ -4,21 +4,13 @@ import { createServer } from './server.js';
 import type { ToolContext } from './types.js';
 
 /**
- * Read and validate required environment variables into a {@link ToolContext}.
- * Throws with an actionable message if anything is missing.
+ * Read configuration into a {@link ToolContext}. No secrets are required; the
+ * only setting is the Solana RPC URL, which defaults to public devnet.
  */
 function loadContext(): ToolContext {
-  const openaiApiKey = process.env.OPENAI_API_KEY;
   const solanaRpcUrl =
     process.env.SOLANA_RPC_URL ?? 'https://api.devnet.solana.com';
-
-  if (!openaiApiKey) {
-    throw new Error(
-      'OPENAI_API_KEY is not set. Copy .env.example to .env and fill it in.',
-    );
-  }
-
-  return { solanaRpcUrl, openaiApiKey };
+  return { solanaRpcUrl };
 }
 
 /** Boot the MCP server and connect it over stdio. */

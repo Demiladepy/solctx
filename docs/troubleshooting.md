@@ -2,21 +2,15 @@
 
 Common issues and fixes.
 
-## `OPENAI_API_KEY is not set`
-
-The server validates required env vars on boot. Copy `.env.example` to `.env`
-and fill in your key, or pass it via the MCP client's `env` block (see the
-[quickstart](./quickstart.md)).
-
 ## `docs index not found`
 
-[`get_docs`](./tools/get-docs.md) needs the embedded corpus. Generate it:
+[`get_docs`](./tools/get-docs.md) needs the built corpus. Generate it:
 
 ```bash
 pnpm build:index
 ```
 
-This writes `data/docs-index.json` (gitignored). It requires `OPENAI_API_KEY`.
+This writes `data/docs-index.json` (gitignored). No API key is required.
 
 ## RPC rate limits / timeouts
 

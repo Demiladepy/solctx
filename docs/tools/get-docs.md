@@ -1,12 +1,13 @@
 # get_docs
 
-> Semantic search over curated Solana documentation.
+> Local keyword search over curated Solana documentation.
 
 ## What it does
 
-Embeds the query and scores it against a pre-built index of curated Solana
-documentation chunks by cosine similarity, returning the three closest matches
-with their source URLs. The index is built once with `pnpm build:index`.
+Ranks the query against a pre-built index of curated Solana documentation chunks
+using local BM25 keyword scoring, returning the three closest matches with their
+source URLs. The index is built once with `pnpm build:index`. Fully offline — no
+embeddings, no API key, no cost.
 
 ## Input schema
 
@@ -23,7 +24,7 @@ with their source URLs. The index is built once with `pnpm build:index`.
   chunks: Array<{
     text: string;
     source_url: string;
-    score: number;   // cosine similarity, 0–1
+    score: number;   // BM25 relevance score (higher = more relevant)
   }>;  // top 3
 }
 ```
@@ -40,7 +41,7 @@ Returns:
     {
       "text": "An Associated Token Account (ATA) is the canonical account that holds a specific SPL token mint for a given owner...",
       "source_url": "https://solana.com/docs/core/tokens",
-      "score": 0.61
+      "score": 4.83
     }
   ]
 }
@@ -56,7 +57,7 @@ Returns:
     {
       "text": "Priority fees let a transaction bid for faster inclusion...",
       "source_url": "https://solana.com/docs/core/fees",
-      "score": 0.55
+      "score": 3.91
     }
   ]
 }
@@ -69,7 +70,8 @@ Returns:
   [troubleshooting.md](../troubleshooting.md).
 - Corpus is curated and intentionally small (v1); coverage grows by editing
   `scripts/build-docs-index.ts`.
-- Each query costs one OpenAI embedding call.
+- Keyword (BM25) ranking, not semantic: paraphrases that share no words with the
+  docs may rank lower. Swappable for embeddings behind the same interface.
 
 ---
 

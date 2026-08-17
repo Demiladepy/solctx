@@ -6,7 +6,9 @@ Get solctx running and connected to an MCP client in a few minutes.
 
 - Node.js 20+
 - pnpm 9+
-- An OpenAI API key (used to embed the documentation corpus for `get_docs`)
+
+**No API keys required.** Doc search runs locally and chain reads use a public
+RPC endpoint.
 
 ## 1. Install
 
@@ -14,16 +16,16 @@ Get solctx running and connected to an MCP client in a few minutes.
 pnpm install
 ```
 
-## 2. Configure environment
+## 2. Configure environment (optional)
 
-Copy the example env file and fill in your key:
+solctx needs no secrets. If you want to point at a non-default RPC, copy the
+example env file:
 
 ```bash
 cp .env.example .env
 ```
 
 ```
-OPENAI_API_KEY=sk-your-key-here
 SOLANA_RPC_URL=https://api.devnet.solana.com
 ```
 
@@ -38,8 +40,8 @@ pnpm build
 
 ## 4. Build the documentation index
 
-This embeds the curated Solana docs corpus so [`get_docs`](./tools/get-docs.md)
-can search it. It calls the OpenAI embeddings API (takes ~30–60s, costs ~$0.01).
+This writes the curated Solana docs corpus so [`get_docs`](./tools/get-docs.md)
+can search it with local BM25 ranking. Instant, offline, no API key.
 
 ```bash
 pnpm build:index
@@ -66,7 +68,6 @@ For **Claude Desktop**, add this to your
       "command": "node",
       "args": ["/absolute/path/to/solctx/dist/index.js"],
       "env": {
-        "OPENAI_API_KEY": "sk-your-key-here",
         "SOLANA_RPC_URL": "https://api.devnet.solana.com"
       }
     }

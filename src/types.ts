@@ -2,11 +2,11 @@ import type { z } from 'zod';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 /**
- * Runtime configuration passed to every tool handler.
+ * Runtime configuration passed to every tool handler. No API keys are required:
+ * chain reads use the RPC URL and doc search runs locally.
  */
 export interface ToolContext {
   solanaRpcUrl: string;
-  openaiApiKey: string;
 }
 
 /**

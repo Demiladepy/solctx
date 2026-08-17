@@ -1,18 +1,15 @@
 /**
- * build-docs-index — one-time builder for `data/docs-index.json`.
+ * build-docs-index — builder for `data/docs-index.json`.
  *
- * Embeds a curated corpus of Solana devnet documentation chunks with OpenAI's
- * text-embedding-3-small model and writes them to disk for `get_docs` to
- * search. Run with: `pnpm build:index` (requires OPENAI_API_KEY).
+ * Writes a curated corpus of Solana devnet documentation chunks to disk for the
+ * `get_docs` tool to search with local BM25 ranking. No API key, no network,
+ * no cost — run with: `pnpm build:index`.
  *
- * The corpus is inlined here (rather than scraped) so the build is
- * deterministic, offline-friendly apart from the embedding call, and easy to
- * review. Add entries to CORPUS to expand coverage.
+ * The corpus is inlined here so the build is deterministic and easy to review.
+ * Add entries to CORPUS to expand coverage, then re-run the script.
  */
-import 'dotenv/config';
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { embedQuery } from '../src/lib/embeddings.js';
 
 interface CorpusEntry {
   id: string;
@@ -99,25 +96,19 @@ const CORPUS: CorpusEntry[] = [
 ];
 
 async function main(): Promise<void> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error('OPENAI_API_KEY is not set. Add it to .env before running.');
-  }
-
-  console.error(`Embedding ${CORPUS.length} documentation chunks...`);
-  const index = [];
-  for (const entry of CORPUS) {
-    const embedding = await embedQuery(entry.text, apiKey);
-    index.push({ ...entry, embedding });
-    console.error(`  ✓ ${entry.id}`);
-  }
-
-  const outPath = fileURLToPath(new URL('../data/docs-index.json', import.meta.url));
-  await writeFile(outPath, JSON.stringify(index, null, 2), 'utf8');
-  console.error(`Wrote ${index.length} chunks to ${outPath}`);
+  const outPath = fileURLToPath(
+    new URL('../data/docs-index.json', import.meta.url),
+  );
+  await writeFile(outPath, JSON.stringify(CORPUS, null, 2), 'utf8');
+  console.error(
+    `Wrote ${CORPUS.length} chunks to ${outPath} (local BM25 index, no API).`,
+  );
 }
 
 main().catch((err: unknown) => {
-  console.error('build-docs-index failed:', err instanceof Error ? err.message : err);
+  console.error(
+    'build-docs-index failed:',
+    err instanceof Error ? err.message : err,
+  );
   process.exit(1);
 });

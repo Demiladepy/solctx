@@ -28,9 +28,8 @@ See [docs/quickstart.md](docs/quickstart.md) for full setup. In short:
 
 ```bash
 pnpm install
-cp .env.example .env      # add your OPENAI_API_KEY
 pnpm build
-pnpm build:index          # embed the docs corpus (requires OPENAI_API_KEY)
+pnpm build:index          # write the local docs index (no API key)
 pnpm start                # MCP server on stdio
 ```
 
@@ -49,7 +48,8 @@ Desktop config snippet).
 
 - Node.js 20+
 - pnpm 9+
-- An OpenAI API key (for documentation embeddings)
+
+No API keys required — doc search is local and chain reads use a public RPC.
 
 ## License
 

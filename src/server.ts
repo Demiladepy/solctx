@@ -29,7 +29,7 @@ export const TOOL_COUNT = tools.length;
  * unhandled exception is returned to the client as a labelled error result
  * rather than crashing the transport.
  *
- * @param context Runtime configuration (RPC URL, OpenAI key).
+ * @param context Runtime configuration (RPC URL).
  * @returns A configured, not-yet-connected {@link Server}.
  */
 export function createServer(context: ToolContext): Server {

@@ -12,8 +12,8 @@ Initial v1 release.
 - MCP server over stdio with four tools:
   - [`get_chain_state`](./tools/get-chain-state.md) — live devnet reads (slot,
     block height, epoch, recent priority fee, network status), cached 5s.
-  - [`get_docs`](./tools/get-docs.md) — semantic search over an embedded corpus
-    of curated Solana documentation.
+  - [`get_docs`](./tools/get-docs.md) — local BM25 keyword search over a curated
+    corpus of Solana documentation (no API key required).
   - [`get_example`](./tools/get-example.md) — five canonical, runnable devnet
     code examples.
   - [`get_sync_status`](./tools/get-sync-status.md) — doc-sync metadata per
