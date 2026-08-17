@@ -1,0 +1,32 @@
+{
+  "send_sol": {
+    "title": "Send SOL between wallets",
+    "explanation": "Transfers SOL from one keypair to another on Solana devnet using SystemProgram.transfer, then confirms the transaction. Amounts are always expressed in lamports (1 SOL = 1_000_000_000 lamports).",
+    "code_snippet": "const connection = new Connection('https://api.devnet.solana.com', 'confirmed');\nconst tx = new Transaction().add(\n  SystemProgram.transfer({\n    fromPubkey: sender.publicKey,\n    toPubkey: recipient.publicKey,\n    lamports: 0.1 * LAMPORTS_PER_SOL,\n  }),\n);\nconst signature = await sendAndConfirmTransaction(connection, tx, [sender]);",
+    "full_file": "examples/send-sol.ts"
+  },
+  "send_spl_token": {
+    "title": "Transfer an SPL token",
+    "explanation": "Transfers SPL tokens between two associated token accounts for the same mint using the transfer helper from @solana/spl-token. The amount is in token base units, accounting for the mint's decimals.",
+    "code_snippet": "const senderAta = await getOrCreateAssociatedTokenAccount(connection, payer, mint, payer.publicKey);\nconst recipientAta = await getOrCreateAssociatedTokenAccount(connection, payer, mint, recipient.publicKey);\nconst signature = await transfer(\n  connection, payer, senderAta.address, recipientAta.address, payer, 25_000_000,\n);",
+    "full_file": "examples/send-spl-token.ts"
+  },
+  "create_token_account": {
+    "title": "Create an associated token account",
+    "explanation": "Derives the canonical Associated Token Account (ATA) address for a (mint, owner) pair and creates it on chain if it does not exist, using getOrCreateAssociatedTokenAccount from @solana/spl-token.",
+    "code_snippet": "const expectedAddress = await getAssociatedTokenAddress(mint, owner);\nconst ata = await getOrCreateAssociatedTokenAccount(\n  connection, payer, mint, owner,\n);\n// ata.address === expectedAddress",
+    "full_file": "examples/create-token-account.ts"
+  },
+  "derive_pda": {
+    "title": "Derive a program-derived address",
+    "explanation": "Derives a Program Derived Address deterministically from seeds and a program id using findProgramAddressSync. A PDA lies off the ed25519 curve, so no private key exists; the returned bump seed is what pushes it off the curve. This is a pure client-side computation.",
+    "code_snippet": "const [pda, bump] = PublicKey.findProgramAddressSync(\n  [Buffer.from('vault'), user.toBuffer()],\n  programId,\n);\nconsole.log(pda.toBase58(), bump);",
+    "full_file": "examples/derive-pda.ts"
+  },
+  "read_account_data": {
+    "title": "Read and deserialize account data",
+    "explanation": "Fetches raw account info with getAccountInfo (owner program, lamports, data buffer) and deserializes an SPL token account with the typed getAccount helper from @solana/spl-token.",
+    "code_snippet": "const info = await connection.getAccountInfo(address);\nconsole.log(info?.owner.toBase58(), info?.lamports, info?.data.length);\nconst account = await getAccount(connection, address);\nconsole.log(account.mint.toBase58(), account.amount.toString());",
+    "full_file": "examples/read-account-data.ts"
+  }
+}

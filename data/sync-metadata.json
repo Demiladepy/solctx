@@ -1,0 +1,42 @@
+{
+  "quickstart": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "network-support": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "examples-library": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "troubleshooting": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "tools/get-docs": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "tools/get-chain-state": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "tools/get-example": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "tools/get-sync-status": {
+    "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  }
+}
