@@ -1,6 +1,6 @@
 {
   "name": "solctx",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server giving AI coding agents live, structured access to Solana devnet — docs, chain state, canonical code examples, and doc-sync status.",
   "type": "module",
   "license": "MIT",

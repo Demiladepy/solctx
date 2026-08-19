@@ -11,6 +11,7 @@ import { getChainStateTool } from './tools/get-chain-state.js';
 import { getDocsTool } from './tools/get-docs.js';
 import { getExampleTool } from './tools/get-example.js';
 import { getSyncStatusTool } from './tools/get-sync-status.js';
+import { getProgramAddressesTool } from './tools/get-program-addresses.js';
 
 /** All tools exposed by the server, in list order. */
 const tools: ToolModule[] = [
@@ -18,6 +19,7 @@ const tools: ToolModule[] = [
   getDocsTool,
   getExampleTool,
   getSyncStatusTool,
+  getProgramAddressesTool,
 ];
 
 /** Number of tools registered — used by tests. */
