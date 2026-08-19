@@ -1,0 +1,45 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "solctx",
+  "description": "Live, structured Solana devnet context for AI coding agents over MCP.",
+  "colors": {
+    "primary": "#9945FF",
+    "light": "#14F195",
+    "dark": "#9945FF"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "README",
+          "docs/quickstart",
+          "docs/network-support"
+        ]
+      },
+      {
+        "group": "Tools",
+        "pages": [
+          "docs/tools/get-chain-state",
+          "docs/tools/get-docs",
+          "docs/tools/get-example",
+          "docs/tools/get-sync-status"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "docs/examples-library",
+          "docs/troubleshooting",
+          "docs/changelog"
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Demiladepy/solctx"
+    }
+  }
+}
