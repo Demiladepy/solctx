@@ -1,0 +1,44 @@
+---
+title: "Examples library"
+---
+
+The [`get_example`](./tools/get-example.md) tool returns canonical, runnable
+Solana devnet code examples. This page explains how the library is curated.
+
+## Available examples
+
+| Task key | Title | Full file |
+| --- | --- | --- |
+| `send_sol` | Send SOL between wallets | `examples/send-sol.ts` |
+| `send_spl_token` | Transfer an SPL token | `examples/send-spl-token.ts` |
+| `create_token_account` | Create an associated token account | `examples/create-token-account.ts` |
+| `derive_pda` | Derive a program-derived address | `examples/derive-pda.ts` |
+| `read_account_data` | Read and deserialize account data | `examples/read-account-data.ts` |
+
+## How examples are curated
+
+- Each example is a **self-contained, runnable** TypeScript file in `examples/`.
+- Metadata (title, explanation, inline snippet, file link) lives in
+  `data/examples.json`, which is what `get_example` reads.
+- Examples target **devnet** and use only `@solana/web3.js` and
+  `@solana/spl-token`.
+
+## Code style conventions
+
+- One task per file, driven by a single `main()` function.
+- A header comment with a one-line purpose and usage instructions.
+- Amounts in lamports / token base units, with the conversion shown explicitly.
+- Errors bubble to a top-level `.catch` that exits non-zero.
+
+## Proposing a new example
+
+1. Add a runnable file under `examples/`.
+2. Add a matching entry to `data/examples.json` (with `title`, `explanation`,
+   `code_snippet`, and `full_file`).
+3. Add the task key to the `get_example` input enum in
+   `src/tools/get-example.ts`.
+4. Update the table above and the [tool doc](./tools/get-example.md).
+
+---
+
+**Last synced:** 2026-08-17 (solana-web3.js@1.98.0)

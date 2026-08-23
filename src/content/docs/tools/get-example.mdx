@@ -1,0 +1,68 @@
+---
+title: "get_example"
+---
+
+> Return a canonical, runnable Solana devnet code example.
+
+## What it does
+
+Looks up a supported task and returns its title, a plain-English explanation, a
+short inline code snippet, and a link to the full runnable file under
+`examples/`. See [examples-library.md](../examples-library.md) for the catalog.
+
+## Input schema
+
+```typescript
+{
+  task: 'send_sol' | 'send_spl_token' | 'create_token_account' | 'derive_pda' | 'read_account_data'
+}
+```
+
+## Output schema
+
+```typescript
+{
+  title: string;
+  explanation: string;
+  code_snippet: string;
+  full_file_link: string;   // path under examples/
+}
+```
+
+## Usage examples
+
+**Example 1: derive a PDA**
+> Ask Claude: "Using solctx, show me how to derive a PDA"
+
+Returns:
+```json
+{
+  "title": "Derive a program-derived address",
+  "explanation": "Derives a Program Derived Address deterministically from seeds and a program id using findProgramAddressSync...",
+  "code_snippet": "const [pda, bump] = PublicKey.findProgramAddressSync(...);",
+  "full_file_link": "examples/derive-pda.ts"
+}
+```
+
+**Example 2: send SOL**
+> Ask Claude: "Using solctx, how do I send SOL?"
+
+Returns:
+```json
+{
+  "title": "Send SOL between wallets",
+  "explanation": "Transfers SOL from one keypair to another on Solana devnet using SystemProgram.transfer...",
+  "code_snippet": "const tx = new Transaction().add(SystemProgram.transfer({ ... }));",
+  "full_file_link": "examples/send-sol.ts"
+}
+```
+
+## Known limitations
+
+- Fixed set of five tasks in v1.
+- Examples target devnet and are not parameterized (they generate fresh
+  keypairs and airdrop).
+
+---
+
+**Last synced:** 2026-08-17 (solana-web3.js@1.98.0)
