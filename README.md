@@ -10,17 +10,18 @@ canonical runnable code examples, and doc-sync status.
 ## Why
 
 AI agents writing Solana code work from stale, half-remembered training data.
-solctx closes that gap by exposing four focused tools an agent can call on demand
+solctx closes that gap by exposing five focused tools an agent can call on demand
 instead of guessing.
 
 ## Tools
 
 | Tool | Purpose |
 | --- | --- |
-| [`get_chain_state`](docs/tools/get-chain-state.md) | Read live devnet state: slot, block height, epoch, priority fee, network status |
+| [`get_chain_state`](docs/tools/get-chain-state.md) | Read live devnet state: slot, block height, epoch, priority fee, SOL supply, network status |
 | [`get_docs`](docs/tools/get-docs.md) | Search curated Solana docs — local BM25, or semantic embeddings when enabled |
 | [`get_example`](docs/tools/get-example.md) | Canonical, runnable code examples for common tasks |
 | [`get_sync_status`](docs/tools/get-sync-status.md) | When each doc section was last verified against the protocol |
+| `get_program_addresses` | Canonical program addresses by category (SPL, DeFi, governance) |
 
 ## Quickstart
 
@@ -52,6 +53,16 @@ Desktop config snippet).
 No API keys required — doc search runs locally (BM25) and chain reads use a
 public RPC. Optionally set `OPENROUTER_API_KEY` to upgrade `get_docs` to
 semantic search (free-tier model by default).
+
+## Documentation site & Thally integration
+
+Built for the **Thally Sync Hackathon (Track 1)**. The doc-sync workflow is the
+point: this repo is the **product repository** that Thally's Track watches — when
+code merges here, Track drafts documentation updates for review.
+
+- **Live docs:** https://solctx-docs.vercel.app
+- **Docs site repo:** [Demiladepy/solctx-docs](https://github.com/Demiladepy/solctx-docs) (Thally site — `docs.json` + `src/content/*.mdx`)
+- **Platform feedback:** [`UPSTREAM_FINDINGS.md`](UPSTREAM_FINDINGS.md) — nine reproducible Thally bugs found while integrating, with repro steps, root causes, and fixes.
 
 ## License
 
