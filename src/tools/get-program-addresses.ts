@@ -5,7 +5,7 @@ import type { ToolModule } from '../types.js';
 import { dataPath } from '../lib/data-path.js';
 
 export const getProgramAddressesInput = z.object({
-  category: z.enum(['spl', 'defi', 'governance', 'all']),
+  category: z.enum(['native', 'spl', 'defi', 'nft', 'governance', 'all']),
 });
 
 /** Catalog shape: category → { label → base58 program address }. */
@@ -29,9 +29,10 @@ async function loadCatalog(): Promise<ProgramCatalog> {
 export const getProgramAddressesTool: ToolModule<typeof getProgramAddressesInput> = {
   name: 'get_program_addresses',
   description:
-    'Look up canonical Solana program addresses by category: spl (token, ' +
-    'associated token, memo), defi (Jupiter, Raydium), governance (SPL ' +
-    'Governance), or all.',
+    'Look up canonical Solana program addresses by category: native (system, ' +
+    'compute budget, address lookup table, stake, vote), spl (token, ' +
+    'token-2022, associated token, memo), defi (Jupiter, Raydium, Orca), nft ' +
+    '(Metaplex Token Metadata), governance (SPL Governance), or all.',
   inputSchema: getProgramAddressesInput,
   async handler(input): Promise<CallToolResult> {
     const catalog = await loadCatalog();

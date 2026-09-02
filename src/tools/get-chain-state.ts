@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { ToolContext, ToolModule } from '../types.js';
-import { chainCache, getConnection } from '../lib/solana-client.js';
+import { chainCache, getConnection, withTimeout } from '../lib/solana-client.js';
 
 export const getChainStateInput = z.object({
   query: z.enum([
@@ -79,7 +79,11 @@ export const getChainStateTool: ToolModule<typeof getChainStateInput> = {
   inputSchema: getChainStateInput,
   async handler(input, context): Promise<CallToolResult> {
     const result = await chainCache.getOrSet(input.query, () =>
-      runQuery(input.query, context),
+      withTimeout(
+        runQuery(input.query, context),
+        10_000,
+        `get_chain_state:${input.query}`,
+      ),
     );
     return {
       content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],

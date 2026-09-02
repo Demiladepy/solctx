@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TtlCache } from '../src/lib/cache.js';
+import { withTimeout } from '../src/lib/solana-client.js';
 import { cosineSimilarity } from '../src/lib/embeddings.js';
 import { rankChunks } from '../src/lib/search.js';
 
@@ -30,6 +31,18 @@ describe('TtlCache', () => {
     await new Promise((r) => setTimeout(r, 25));
     await cache.getOrSet('k', factory);
     expect(calls).toBe(2);
+  });
+});
+
+describe('withTimeout', () => {
+  it('resolves when the promise beats the timeout', async () => {
+    await expect(withTimeout(Promise.resolve('ok'), 100)).resolves.toBe('ok');
+  });
+  it('rejects with a clear message when the timeout wins', async () => {
+    const slow = new Promise((r) => setTimeout(r, 200));
+    await expect(withTimeout(slow, 20, 'test op')).rejects.toThrow(
+      /test op timed out after 20ms/,
+    );
   });
 });
 

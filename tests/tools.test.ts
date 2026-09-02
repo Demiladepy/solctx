@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { PublicKey } from '@solana/web3.js';
 import type { ToolContext } from '../src/types.js';
 import { getChainStateInput } from '../src/tools/get-chain-state.js';
 import { getDocsInput } from '../src/tools/get-docs.js';
@@ -56,7 +57,23 @@ describe('get_program_addresses handler', () => {
 
   it('"all" returns every category', async () => {
     const all = (await callJson(getProgramAddressesTool, { category: 'all' })) as Record<string, unknown>;
-    expect(Object.keys(all).sort()).toEqual(['defi', 'governance', 'spl']);
+    expect(Object.keys(all).sort()).toEqual(['defi', 'governance', 'native', 'nft', 'spl']);
+  });
+
+  it('native and nft categories resolve to known programs', async () => {
+    const native = (await callJson(getProgramAddressesTool, { category: 'native' })) as Record<string, Record<string, string>>;
+    expect(native.native.system_program).toBe('11111111111111111111111111111111');
+    const nft = (await callJson(getProgramAddressesTool, { category: 'nft' })) as Record<string, Record<string, string>>;
+    expect(nft.nft.metaplex_token_metadata).toBe('metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s');
+  });
+
+  it('every listed address is a valid base58 public key (catches typos)', async () => {
+    const all = (await callJson(getProgramAddressesTool, { category: 'all' })) as Record<string, Record<string, string>>;
+    for (const category of Object.values(all)) {
+      for (const address of Object.values(category)) {
+        expect(new PublicKey(address).toBase58()).toBe(address);
+      }
+    }
   });
 });
 
