@@ -96,6 +96,86 @@ const CORPUS: CorpusEntry[] = [
     source_url: 'https://solana.com/docs/core/clusters',
     text: 'Solana devnet is a public test cluster with a free faucet, reachable at https://api.devnet.solana.com. It mirrors mainnet-beta behavior but tokens have no value. Public RPC endpoints are rate limited; use a dedicated RPC provider for heavier workloads.',
   },
+  {
+    id: 'versioned-transactions',
+    source_url: 'https://solana.com/docs/core/transactions/versions',
+    text: 'Versioned transactions (VersionedTransaction with TransactionMessage.compileToV0Message) support Address Lookup Tables, letting a single transaction reference far more accounts than the legacy format. Build a v0 message, sign it, and send with `connection.sendTransaction(versionedTx)`.',
+  },
+  {
+    id: 'address-lookup-tables',
+    source_url: 'https://solana.com/docs/advanced/lookup-tables',
+    text: 'Address Lookup Tables (ALTs) store account addresses on chain so a versioned transaction can reference them by 1-byte index instead of a full 32-byte key. Create one with `AddressLookupTableProgram.createLookupTable`, extend it, then pass the resolved table into `compileToV0Message`.',
+  },
+  {
+    id: 'cross-program-invocation',
+    source_url: 'https://solana.com/docs/core/cpi',
+    text: 'A Cross-Program Invocation (CPI) is one program calling another within a single transaction, using `invoke` or `invoke_signed` (the latter signs with PDA seeds). CPIs are limited to a depth of 4 and pass the same AccountInfo references down the call stack.',
+  },
+  {
+    id: 'rent-exemption',
+    source_url: 'https://solana.com/docs/core/fees',
+    text: 'Accounts must hold a minimum lamport balance to be rent-exempt, proportional to their data size. Compute it with `connection.getMinimumBalanceForRentExemption(dataLen)`. Sub-exempt accounts are purged; almost all accounts are created rent-exempt.',
+  },
+  {
+    id: 'token-2022',
+    source_url: 'https://solana.com/docs/core/tokens',
+    text: 'Token-2022 (Token Extensions) is a superset of the SPL Token program adding features like transfer fees, confidential transfers, and metadata pointers via extensions. Its program id is TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb; pass it explicitly since accounts are not interchangeable with the classic Token program.',
+  },
+  {
+    id: 'get-program-accounts',
+    source_url: 'https://solana.com/docs/rpc/http/getprogramaccounts',
+    text: 'Fetch all accounts owned by a program with `connection.getProgramAccounts(programId, { filters })`. Use `dataSize` and `memcmp` filters to narrow results server-side; unfiltered scans are heavy and often disabled on public RPCs.',
+  },
+  {
+    id: 'simulate-transaction',
+    source_url: 'https://solana.com/docs/rpc/http/simulatetransaction',
+    text: 'Preview a transaction without submitting it using `connection.simulateTransaction(tx)`. The result returns program logs, compute units consumed, and any error — use it to catch failures and size compute budgets before paying fees.',
+  },
+  {
+    id: 'commitment-levels',
+    source_url: 'https://solana.com/docs/rpc',
+    text: 'RPC reads accept a commitment level: `processed` (fastest, may be rolled back), `confirmed` (voted on by a supermajority, a good default), and `finalized` (rooted, irreversible). Higher commitment trades latency for certainty.',
+  },
+  {
+    id: 'durable-nonces',
+    source_url: 'https://solana.com/docs/advanced/introduction-to-durable-nonces',
+    text: 'Durable nonces replace a recent blockhash with a stored nonce account value, letting a transaction stay valid indefinitely until used — useful for offline or multi-signer signing. Create a nonce account and put `SystemProgram.nonceAdvance` as the first instruction.',
+  },
+  {
+    id: 'spl-token-decimals',
+    source_url: 'https://solana.com/docs/core/tokens',
+    text: 'SPL token amounts are integers in base units; the mint\'s `decimals` field defines the display scale. A mint with 6 decimals represents 1.5 tokens as 1_500_000 base units. Always convert with `amount * 10 ** decimals`, never floats.',
+  },
+  {
+    id: 'compute-unit-price',
+    source_url: 'https://solana.com/docs/core/fees',
+    text: 'Total priority fee = compute units used × compute unit price (micro-lamports). Set the price with `ComputeBudgetProgram.setComputeUnitPrice` and cap units with `setComputeUnitLimit`. Request only the units you need so the fee stays low.',
+  },
+  {
+    id: 'websocket-subscriptions',
+    source_url: 'https://solana.com/docs/rpc/websocket',
+    text: 'Subscribe to live updates over WebSocket: `connection.onAccountChange(pubkey, cb)`, `onLogs(filter, cb)`, and `onProgramAccountChange`. Each returns a subscription id you pass to the matching `remove*Listener` to unsubscribe.',
+  },
+  {
+    id: 'anchor-pda',
+    source_url: 'https://www.anchor-lang.com/docs/pdas',
+    text: 'In Anchor, declare a PDA account with `#[account(seeds = [...], bump)]` and Anchor derives and verifies it automatically. Off chain, mirror the derivation with `PublicKey.findProgramAddressSync(seeds, programId)` using the same seeds and program id.',
+  },
+  {
+    id: 'transaction-size-limit',
+    source_url: 'https://solana.com/docs/core/transactions',
+    text: 'A serialized transaction must fit in 1232 bytes. Large transactions hit this limit as accounts and instructions grow; Address Lookup Tables and splitting work across transactions are the usual fixes.',
+  },
+  {
+    id: 'associated-token-idempotent',
+    source_url: 'https://solana.com/docs/core/tokens',
+    text: 'Use `createAssociatedTokenAccountIdempotentInstruction` when a transaction may run more than once or the ATA might already exist — it succeeds whether or not the account is present, avoiding "account already in use" errors.',
+  },
+  {
+    id: 'lamports-per-sol',
+    source_url: 'https://solana.com/docs/core/tokens',
+    text: 'One SOL is 1_000_000_000 lamports (the constant LAMPORTS_PER_SOL). All balances, transfers, and fees are denominated in lamports; convert for display with `lamports / LAMPORTS_PER_SOL`.',
+  },
 ];
 
 async function main(): Promise<void> {
