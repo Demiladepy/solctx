@@ -1,0 +1,14 @@
+# GitGuardian configuration
+#
+# The paths below contain PUBLIC Solana program addresses and example account
+# keys — base58-encoded 32-byte *public* keys. Their high entropy trips generic
+# secret detection, but they are not secrets: they are published on every Solana
+# explorer and hardcoded in the official @solana/spl-token, Metaplex, and Orca
+# SDKs. No private keys, seeds, or credentials are ever committed to this repo
+# (see .gitignore — .env is untracked).
+version: 2
+secret:
+  ignored-paths:
+    - data/program-addresses.json
+    - examples/**
+    - scripts/build-docs-index.ts
