@@ -25,9 +25,9 @@
     "drift_notes": null
   },
   "tools/get-chain-state": {
-    "verified_at": "2026-08-17T00:00:00Z",
+    "verified_at": "2026-09-03T00:00:00Z",
     "protocol_version": "solana-web3.js@1.98.0",
-    "drift_notes": null
+    "drift_notes": "Added supply query (total/circulating/non-circulating SOL)."
   },
   "tools/get-example": {
     "verified_at": "2026-08-17T00:00:00Z",
@@ -36,6 +36,11 @@
   },
   "tools/get-sync-status": {
     "verified_at": "2026-08-17T00:00:00Z",
+    "protocol_version": "solana-web3.js@1.98.0",
+    "drift_notes": null
+  },
+  "tools/get-program-addresses": {
+    "verified_at": "2026-09-03T00:00:00Z",
     "protocol_version": "solana-web3.js@1.98.0",
     "drift_notes": null
   }

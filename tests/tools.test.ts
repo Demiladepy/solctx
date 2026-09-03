@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { PublicKey } from '@solana/web3.js';
 import type { ToolContext } from '../src/types.js';
-import { getChainStateInput } from '../src/tools/get-chain-state.js';
+import { getChainStateInput, getChainStateTool } from '../src/tools/get-chain-state.js';
 import { getDocsInput } from '../src/tools/get-docs.js';
 import { getExampleInput, getExampleTool } from '../src/tools/get-example.js';
 import { getSyncStatusInput, getSyncStatusTool } from '../src/tools/get-sync-status.js';
@@ -28,6 +28,7 @@ describe('input schemas', () => {
   it('get_chain_state accepts exactly its declared queries', () => {
     const queries = getChainStateInput.shape.query.options;
     expect(queries).toContain('slot');
+    expect(queries).toContain('supply');
     for (const q of queries) {
       expect(getChainStateInput.parse({ query: q }).query).toBe(q);
     }
@@ -47,6 +48,19 @@ describe('input schemas', () => {
     expect(getExampleInput.parse({ task: 'derive_pda' }).task).toBe('derive_pda');
     expect(getProgramAddressesInput.parse({ category: 'all' }).category).toBe('all');
   });
+});
+
+describe('get_chain_state handler', () => {
+  it('supply returns positive SOL amounts from live devnet', async () => {
+    const result = (await callJson(getChainStateTool, { query: 'supply' })) as Record<
+      string,
+      number
+    >;
+    expect(result.total_sol).toBeGreaterThan(0);
+    expect(result.circulating_sol).toBeGreaterThan(0);
+    expect(result.non_circulating_sol).toBeGreaterThanOrEqual(0);
+    expect(result.total_sol).toBeGreaterThanOrEqual(result.circulating_sol);
+  }, 15_000);
 });
 
 describe('get_program_addresses handler', () => {

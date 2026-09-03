@@ -14,6 +14,7 @@ export const getSyncStatusInput = z.object({
     'tools/get-chain-state',
     'tools/get-example',
     'tools/get-sync-status',
+    'tools/get-program-addresses',
     'all',
   ]),
 });

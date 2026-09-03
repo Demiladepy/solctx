@@ -9,6 +9,7 @@ export const getChainStateInput = z.object({
     'block_height',
     'epoch',
     'recent_priority_fee',
+    'supply',
     'network_status',
   ]),
 });
@@ -54,6 +55,17 @@ async function runQuery(
         samples: fees.length,
       };
     }
+    case 'supply': {
+      const supply = await connection.getSupply({
+        excludeNonCirculatingAccountsList: true,
+      });
+      const LAMPORTS_PER_SOL = 1_000_000_000;
+      return {
+        total_sol: supply.value.total / LAMPORTS_PER_SOL,
+        circulating_sol: supply.value.circulating / LAMPORTS_PER_SOL,
+        non_circulating_sol: supply.value.nonCirculating / LAMPORTS_PER_SOL,
+      };
+    }
     case 'network_status': {
       const start = Date.now();
       const version = await connection.getVersion();
@@ -75,7 +87,7 @@ export const getChainStateTool: ToolModule<typeof getChainStateInput> = {
   name: 'get_chain_state',
   description:
     'Read live Solana devnet chain state: current slot, block height, epoch, ' +
-    'recent priority fee, or overall network status.',
+    'recent priority fee, total SOL supply, or overall network status.',
   inputSchema: getChainStateInput,
   async handler(input, context): Promise<CallToolResult> {
     const result = await chainCache.getOrSet(input.query, () =>

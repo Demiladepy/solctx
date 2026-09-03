@@ -21,7 +21,7 @@ instead of guessing.
 | [`get_docs`](docs/tools/get-docs.md) | Search curated Solana docs — local BM25, or semantic embeddings when enabled |
 | [`get_example`](docs/tools/get-example.md) | Canonical, runnable code examples for common tasks |
 | [`get_sync_status`](docs/tools/get-sync-status.md) | When each doc section was last verified against the protocol |
-| `get_program_addresses` | Canonical program addresses by category (SPL, DeFi, governance) |
+| [`get_program_addresses`](docs/tools/get-program-addresses.md) | Canonical program addresses by category (native, SPL, DeFi, NFT, governance) |
 
 ## Quickstart
 
@@ -70,4 +70,4 @@ code merges here, Track drafts documentation updates for review.
 
 ---
 
-**Last synced:** 2026-08-17 (solana-web3.js@1.98.0)
+**Last synced:** 2026-09-03 (solana-web3.js@1.98.0)

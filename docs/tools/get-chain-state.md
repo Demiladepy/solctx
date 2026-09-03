@@ -12,7 +12,7 @@ short window don't hammer the RPC endpoint.
 
 ```typescript
 {
-  query: 'slot' | 'block_height' | 'epoch' | 'recent_priority_fee' | 'network_status'
+  query: 'slot' | 'block_height' | 'epoch' | 'recent_priority_fee' | 'supply' | 'network_status'
 }
 ```
 
@@ -27,6 +27,8 @@ short window don't hammer the RPC endpoint.
 { epoch: number; slot_index: number; slots_in_epoch: number; absolute_slot: number }
 // query: 'recent_priority_fee'
 { median_priority_fee_micro_lamports: number; samples: number }
+// query: 'supply'
+{ total_sol: number; circulating_sol: number; non_circulating_sol: number }
 // query: 'network_status'
 { status: 'ok'; rpc_url: string; ping_ms: number; solana_core: string }
 ```
@@ -43,7 +45,19 @@ Returns:
 }
 ```
 
-**Example 2: network health**
+**Example 2: SOL supply**
+> Ask Claude: "Using solctx, what's the total SOL supply on devnet?"
+
+Returns:
+```json
+{
+  "total_sol": 1000000000,
+  "circulating_sol": 999999500,
+  "non_circulating_sol": 500
+}
+```
+
+**Example 3: network health**
 > Ask Claude: "Using solctx, is devnet healthy?"
 
 Returns:
@@ -64,4 +78,4 @@ Returns:
 
 ---
 
-**Last synced:** 2026-08-17 (solana-web3.js@1.98.0)
+**Last synced:** 2026-09-03 (solana-web3.js@1.98.0)
